@@ -278,8 +278,12 @@
         NSString *sectionName = [self.ballSection objectAtIndex:indexPath.section];
         NSMutableArray *studentsArray = [self studentsForRating:sectionName];
         
+        CGFloat red, green, blue, alfa;
+        [[[studentsArray objectAtIndex:indexPath.row] color] getRed:&red green:&green blue:&blue alpha:&alfa];
+        
         cell.textLabel.text = [NSString stringWithFormat:@"RGB:{%.0f, %.0f, %.0f}",
-                               self.redColor * 255, self.greenColor * 255, self.blueColor * 255];
+                               red * 255, green * 255, blue * 255];
+        
         cell.backgroundColor = [[studentsArray objectAtIndex:indexPath.row] color];
         
         return cell;
