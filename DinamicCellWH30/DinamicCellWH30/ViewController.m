@@ -8,14 +8,23 @@
 
 #import "ViewController.h"
 #import "Student.h"
+#import "ColorAndName.h"
 
 @interface ViewController ()
 
 @property (assign, nonatomic) CGFloat redColor;
 @property (assign, nonatomic) CGFloat greenColor;
 @property (assign, nonatomic) CGFloat blueColor;
+
 @property (strong, nonatomic) NSMutableArray *students;
 @property (strong, nonatomic) NSArray *ballSection;
+
+@property (strong, nonatomic) NSMutableArray *veryBadStudents;
+@property (strong, nonatomic) NSMutableArray *badStudents;
+@property (strong, nonatomic) NSMutableArray *goodStudents;
+@property (strong, nonatomic) NSMutableArray *veryGoodtudents;
+
+@property (strong, nonatomic) NSMutableArray *colorAndName;
 
 
 @end
@@ -32,11 +41,25 @@
     self.mainTableView.scrollIndicatorInsets = inset;
     
     self.ballSection = [[NSArray alloc] initWithObjects:
-                        @"Bad student", @"Very bad student", @"Good student", @"Very good student", nil];
+                        @"veryBadStudents", @"badStudents", @"goodStudents", @"veryGoodtudents", @"colorAndName", nil];
     
     self.students = [[NSMutableArray alloc] init];
+    self.veryBadStudents = [[NSMutableArray alloc] init];
+    self.badStudents = [[NSMutableArray alloc] init];
+    self.goodStudents = [[NSMutableArray alloc] init];
+    self.veryGoodtudents = [[NSMutableArray alloc] init];
+    self.colorAndName = [[NSMutableArray alloc] init];
     
-    for (int i = 0; i < 10; i++)
+    for (int j = 0; j < 10; j++)
+    {
+        ColorAndName *object = [[ColorAndName alloc] init];
+        object.name = [self randomName];
+        object.color = [self randomColor];
+        
+        [self.colorAndName addObject:object];
+    }
+    
+    for (int i = 0; i < 20; i++)
     {
         Student *student = [[Student alloc] init];
         
@@ -47,16 +70,37 @@
         if (student.averageBall == 2)
         {
             student.color = [UIColor redColor];
+            student.rating = veryBadStudents;
+            [self.veryBadStudents addObject:student];
         }
         else if (student.averageBall == 3)
         {
             student.color = [UIColor orangeColor];
+            student.rating = badStudents;
+            [self.badStudents addObject:student];
+        }
+        else if (student.averageBall == 4)
+        {
+            student.color = [UIColor colorWithRed:
+                             (float) 112 / 255 green:(float)216 / 255 blue:(float)143 / 255 alpha:1];
+            student.rating = goodStudents;
+            [self.goodStudents addObject:student];
+        }
+        else if (student.averageBall == 5)
+        {
+            student.color = [UIColor colorWithRed:
+                             (float) 32 / 255 green:(float)134 / 255 blue:(float)28 / 255 alpha:1];
+            student.rating = veryGoodtudents;
+            [self.veryGoodtudents addObject:student];
         }
         
         [self.students addObject:student];
     }
     
-    [self sort];
+    [self sortWithArray:self.veryBadStudents];
+    [self sortWithArray:self.badStudents];
+    [self sortWithArray:self.goodStudents];
+    [self sortWithArray:self.veryGoodtudents];
     
 }
 
@@ -67,9 +111,37 @@
 
 #pragma mark - Private Methods
 
-- (void) sort
+- (NSMutableArray*) studentsForRating:(NSString*)rating
 {
-    [self.students sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+    NSMutableArray *array = [[NSMutableArray alloc] init];
+    
+    if ([rating isEqualToString:@"veryBadStudents"])
+    {
+        array = self.veryBadStudents;
+    }
+    else if ([rating isEqualToString:@"badStudents"])
+    {
+        array = self.badStudents;
+    }
+    else if ([rating isEqualToString:@"goodStudents"])
+    {
+        array = self.goodStudents;
+    }
+    else if ([rating isEqualToString:@"veryGoodtudents"])
+    {
+        array = self.veryGoodtudents;
+    }
+    else
+    {
+        array = self.colorAndName;
+    }
+    
+    return array;
+}
+
+- (void) sortWithArray:(NSMutableArray*)array
+{
+    [array sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
         return [[obj1 name] compare:[obj2 name]];
     }];
 }
@@ -171,14 +243,7 @@
     
     NSString *sectionName = [self.ballSection objectAtIndex:section];
     
-    /*
-     Здесь по имени секции должны отбираться объекты из массива
-     возможно создать отдельный метод
-     который будет возвращать кол-во объектов в секции
-    */
-    
-    
-    return [self.students count];
+    return [[self studentsForRating:sectionName] count];
 }
 
 /*
@@ -196,63 +261,56 @@
 {
     NSLog(@"cellForRowAtIndexPath: {%ld, %ld}", (long)indexPath.section, (long)indexPath.row);
     
-    static NSString *identifier = @"Cell";
-    
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-    
-    
-    if (!cell)
+    if (indexPath.section == 4)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
+        static NSString *identifier = @"ColorAndName";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         
-        NSLog(@"cell created");
+        if (!cell)
+        {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            NSLog(@"cell created");
+        }
+        else
+        {
+            NSLog(@"cell reused");
+        }
+        NSString *sectionName = [self.ballSection objectAtIndex:indexPath.section];
+        NSMutableArray *studentsArray = [self studentsForRating:sectionName];
+        
+        cell.textLabel.text = [NSString stringWithFormat:@"RGB:{%.0f, %.0f, %.0f}",
+                               self.redColor * 255, self.greenColor * 255, self.blueColor * 255];
+        cell.backgroundColor = [[studentsArray objectAtIndex:indexPath.row] color];
+        
+        return cell;
     }
     else
     {
-        NSLog(@"cell reused");
+        static NSString *identifier = @"Cell";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        
+        if (!cell)
+        {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
+            NSLog(@"cell created");
+        }
+        else
+        {
+            NSLog(@"cell reused");
+        }
+        
+        NSString *sectionName = [self.ballSection objectAtIndex:indexPath.section];
+        NSMutableArray *studentsArray = [self studentsForRating:sectionName];
+        
+        cell.textLabel.textColor = [[studentsArray objectAtIndex:indexPath.row] color];
+        cell.textLabel.text = [NSString stringWithFormat:@"%@ %@",
+                               [[studentsArray objectAtIndex:indexPath.row] name],
+                               [[studentsArray objectAtIndex:indexPath.row] lastName]];
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"%ld",
+                                     (long)[[studentsArray objectAtIndex:indexPath.row] averageBall]];
+        
+        return cell;
     }
-    
-    cell.textLabel.textColor = [[self.students objectAtIndex:indexPath.row] color];
-    
-    cell.textLabel.text = [NSString stringWithFormat:@"%@ %@",
-                           [[self.students objectAtIndex:indexPath.row] name],
-                           [[self.students objectAtIndex:indexPath.row] lastName]];
-    
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"%ld",
-                                 (long)[[self.students objectAtIndex:indexPath.row] averageBall]];
-    
-    return cell;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 @end

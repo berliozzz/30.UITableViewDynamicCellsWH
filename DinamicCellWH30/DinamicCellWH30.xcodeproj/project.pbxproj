@@ -16,6 +16,7 @@
 		9A9986CE1C4BB6B50006B5BD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9A9986CC1C4BB6B50006B5BD /* LaunchScreen.storyboard */; };
 		9A9986D91C4BB6B50006B5BD /* DinamicCellWH30Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A9986D81C4BB6B50006B5BD /* DinamicCellWH30Tests.m */; };
 		9A9986E41C4BB6B50006B5BD /* DinamicCellWH30UITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A9986E31C4BB6B50006B5BD /* DinamicCellWH30UITests.m */; };
+		9AF22FA71C5001B500F3565D /* ColorAndName.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AF22FA61C5001B500F3565D /* ColorAndName.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +55,8 @@
 		9A9986DF1C4BB6B50006B5BD /* DinamicCellWH30UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DinamicCellWH30UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A9986E31C4BB6B50006B5BD /* DinamicCellWH30UITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DinamicCellWH30UITests.m; sourceTree = "<group>"; };
 		9A9986E51C4BB6B50006B5BD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9AF22FA51C5001B500F3565D /* ColorAndName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorAndName.h; sourceTree = "<group>"; };
+		9AF22FA61C5001B500F3565D /* ColorAndName.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorAndName.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +107,8 @@
 		9A9986BD1C4BB6B50006B5BD /* DinamicCellWH30 */ = {
 			isa = PBXGroup;
 			children = (
+				9AF22FA51C5001B500F3565D /* ColorAndName.h */,
+				9AF22FA61C5001B500F3565D /* ColorAndName.m */,
 				9A7AB36A1C4BCF55003CDD19 /* Student.h */,
 				9A7AB36B1C4BCF55003CDD19 /* Student.m */,
 				9A9986C11C4BB6B50006B5BD /* AppDelegate.h */,
@@ -278,6 +283,7 @@
 				9A9986C61C4BB6B50006B5BD /* ViewController.m in Sources */,
 				9A9986C31C4BB6B50006B5BD /* AppDelegate.m in Sources */,
 				9A9986C01C4BB6B50006B5BD /* main.m in Sources */,
+				9AF22FA71C5001B500F3565D /* ColorAndName.m in Sources */,
 				9A7AB36C1C4BCF55003CDD19 /* Student.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
